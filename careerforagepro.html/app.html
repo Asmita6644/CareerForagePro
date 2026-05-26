@@ -1,0 +1,2244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareerForge Pro AI - AI Resume Builder with ATS Optimization</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+            color: #e0e0e0;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Navigation */
+        nav {
+            background: linear-gradient(135deg, #1a1f2e 0%, #16213e 100%);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0,212,255,0.2);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 2px solid #00d4ff;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #00ff88, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo-icon {
+            font-size: 1.8rem;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-buttons button {
+            padding: 0.6rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .btn-nav-login {
+            background: transparent;
+            color: #00d4ff;
+            border: 2px solid #00d4ff;
+        }
+
+        .btn-nav-login:hover {
+            background: #00d4ff;
+            color: #0a0e27;
+            transform: translateY(-2px);
+        }
+
+        .btn-nav-signup {
+            background: linear-gradient(135deg, #00ff88, #00d4ff);
+            color: #0a0e27;
+        }
+
+        .btn-nav-signup:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,255,136,0.4);
+        }
+
+        .btn-logout {
+            background: #ff4444;
+            color: white;
+        }
+
+        .btn-logout:hover {
+            background: #cc0000;
+        }
+
+        .user-badge {
+            background: linear-gradient(135deg, #00ff88, #00d4ff);
+            color: #0a0e27;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Pages */
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Landing Page */
+        .hero {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            color: white;
+            line-height: 1.2;
+        }
+
+        .hero-gradient {
+            background: linear-gradient(135deg, #00ff88, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: #b0b0b0;
+            margin-bottom: 2rem;
+        }
+
+        .ai-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff6b9d 0%, #c44569 100%);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            margin-bottom: 1rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            padding: 1rem 2.5rem;
+            font-size: 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            background: linear-gradient(135deg, #00d4ff, #0099ff);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,212,255,0.3);
+        }
+
+        .btn-secondary {
+            padding: 1rem 2.5rem;
+            font-size: 1rem;
+            border: 2px solid #00d4ff;
+            background: transparent;
+            color: #00d4ff;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-secondary:hover {
+            background: #00d4ff;
+            color: #0a0e27;
+        }
+
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, #1a1f2e 0%, #16213e 100%);
+            padding: 2rem;
+            border-radius: 10px;
+            border: 2px solid #00d4ff;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0,255,136,0.1), rgba(0,212,255,0.1));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,212,255,0.3);
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .feature-card > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .ai-label {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff6b9d, #c44569);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .feature-card h3 {
+            color: #00ff88;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-card p {
+            color: #b0b0b0;
+            font-size: 0.95rem;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1a1f2e 0%, #16213e 100%);
+            padding: 2rem;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 450px;
+            border: 2px solid #00d4ff;
+            box-shadow: 0 10px 40px rgba(0,212,255,0.3);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-header h2 {
+            color: #00ff88;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: #00d4ff;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Form */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #00d4ff;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #00d4ff;
+            background: #0a0e27;
+            color: #e0e0e0;
+            border-radius: 6px;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #00ff88;
+            box-shadow: 0 0 15px rgba(0,255,136,0.3);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-submit {
+            width: 100%;
+            padding: 0.75rem;
+            background: linear-gradient(135deg, #00ff88, #00d4ff);
+            color: #0a0e27;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .form-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,255,136,0.3);
+        }
+
+        /* Dashboard */
+        .welcome-section {
+            background: linear-gradient(135deg, #1a1f2e 0%, #16213e 100%);
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            border: 2px solid #00d4ff;
+        }
+
+        .welcome-section h2 {
+            color: #00ff88;
+            margin-bottom: 0.5rem;
+        }
+
+        .resumes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .resume-card {
+            background: linear-gradient(135deg, #1a1f2e 0%, #16213e 100%);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border: 2px solid #00d4ff;
+            transition: all 0.3s;
+        }
+
+        .resume-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,212,255,0.3);
+        }
+
+        .resume-card h3 {
+            color: #00ff88;
+            margin-bottom: 0.5rem;
+        }
+
+        .resume-card p {
+            color: #b0b0b0;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .card-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .card-buttons button {
+            flex: 1;
+            min-width: 70px;
+            padding: 0.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 0.85rem;
+        }
+
+        .btn-edit {
+            background: #00d4ff;
+            color: #0a0e27;
+        }
+
+        .btn-edit:hover {
+            background: #00ff88;
+        }
+
+        .btn-pdf {
+            background: #0099ff;
+            color: white;
+        }
+
+        .btn-pdf:hover {
+            background: #0066cc;
+        }
+
+        .btn-delete {
+            background: #ff4444;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background: #cc0000;
+        }
+
+        .btn-ai {
+            background: linear-gradient(135deg, #ff6b9d, #c44569);
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-ai:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255,107,157,0.3);
+        }
+
+        /* Resume Builder */
+        .builder-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .builder-section {
+            background: linear-gradient(135deg, #1a1f2e 0%, #16213e 100%);
+            padding: 2rem;
+            border-radius: 10px;
+            border: 2px solid #00d4ff;
+        }
+
+        .builder-section h3 {
+            color: #00ff88;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #00d4ff;
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            padding: 0.75rem 1.5rem;
+            background: none;
+            border: none;
+            color: #b0b0b0;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+            white-space: nowrap;
+            font-weight: 600;
+        }
+
+        .tab-btn.active {
+            color: #00ff88;
+            border-bottom-color: #00ff88;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .item-list {
+            margin-top: 1rem;
+        }
+
+        .item {
+            background: #0a0e27;
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            border-left: 4px solid #00ff88;
+            border: 2px solid #00d4ff;
+        }
+
+        .item-content h4 {
+            color: #00ff88;
+            margin-bottom: 0.25rem;
+        }
+
+        .item-content p {
+            color: #b0b0b0;
+            font-size: 0.9rem;
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-remove {
+            background: #ff4444;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+
+        .btn-remove:hover {
+            background: #cc0000;
+        }
+
+        .btn-improve {
+            background: linear-gradient(135deg, #ff6b9d, #c44569);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+
+        .btn-improve:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255,107,157,0.3);
+        }
+
+        /* Preview */
+        .preview {
+            background: white;
+            color: #1a1a1a;
+            padding: 2rem;
+            border-radius: 10px;
+            font-family: 'Calibri', sans-serif;
+            line-height: 1.6;
+            min-height: 600px;
+        }
+
+        .preview-header {
+            text-align: center;
+            border-bottom: 2px solid #0099ff;
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .preview-name {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #1a1a1a;
+        }
+
+        .preview-contact {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 0.5rem;
+        }
+
+        .preview-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .preview-section-title {
+            font-weight: bold;
+            color: #0099ff;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 0.5rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+        }
+
+        .preview-item {
+            margin-bottom: 1rem;
+        }
+
+        .preview-item-title {
+            font-weight: bold;
+            color: #1a1a1a;
+        }
+
+        .preview-item-subtitle {
+            color: #666;
+            font-style: italic;
+            font-size: 0.9rem;
+        }
+
+        .preview-item-content {
+            font-size: 0.9rem;
+            color: #333;
+            margin-top: 0.25rem;
+        }
+
+        .skill-tag {
+            display: inline-block;
+            background: linear-gradient(135deg, #0099ff, #0066cc);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 3px;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+        }
+
+        /* ATS Analyzer */
+        .ats-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .ats-section {
+            background: linear-gradient(135deg, #1a1f2e 0%, #16213e 100%);
+            padding: 2rem;
+            border-radius: 10px;
+            border: 2px solid #00d4ff;
+        }
+
+        .ats-section h3 {
+            color: #00ff88;
+            margin-bottom: 1.5rem;
+        }
+
+        .score-display {
+            background: #0a0e27;
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            border: 2px solid #00d4ff;
+            margin: 1rem 0;
+        }
+
+        .score-number {
+            font-size: 4rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #00ff88, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .score-text {
+            color: #b0b0b0;
+            margin-top: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background: #0a0e27;
+            border-radius: 6px;
+            overflow: hidden;
+            margin: 1rem 0;
+            border: 2px solid #00d4ff;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00ff88, #00d4ff);
+            width: 0%;
+            transition: width 0.5s;
+        }
+
+        .keywords-section {
+            margin: 1.5rem 0;
+        }
+
+        .keywords-section h4 {
+            color: #00ff88;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+        }
+
+        .keyword-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .keyword-tag {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border: 2px solid;
+        }
+
+        .keyword-matched {
+            background: rgba(0,255,136,0.2);
+            color: #00ff88;
+            border-color: #00ff88;
+        }
+
+        .keyword-missing {
+            background: rgba(255,68,68,0.2);
+            color: #ff4444;
+            border-color: #ff4444;
+        }
+
+        .suggestions {
+            margin-top: 1.5rem;
+        }
+
+        .suggestion-item {
+            background: rgba(255,187,51,0.2);
+            border-left: 4px solid #ffbb33;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            color: #e0e0e0;
+        }
+
+        /* AI Features Panel */
+        .ai-panel {
+            background: linear-gradient(135deg, rgba(255,107,157,0.1), rgba(196,69,105,0.1));
+            border: 2px solid #ff6b9d;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .ai-panel h3 {
+            color: #ff6b9d;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .ai-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .ai-feature-btn {
+            background: linear-gradient(135deg, #ff6b9d, #c44569);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .ai-feature-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255,107,157,0.3);
+        }
+
+        .ai-feature-icon {
+            display: block;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Utilities */
+        .hidden {
+            display: none !important;
+        }
+
+        .success-message {
+            background: rgba(0,255,136,0.2);
+            border: 2px solid #00ff88;
+            color: #00ff88;
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+        }
+
+        .error-message {
+            background: rgba(255,68,68,0.2);
+            border: 2px solid #ff4444;
+            color: #ff4444;
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+        }
+
+        .btn-add {
+            width: 100%;
+            padding: 0.75rem;
+            margin-top: 1rem;
+            background: linear-gradient(135deg, #00d4ff, #0099ff);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .btn-add:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,212,255,0.3);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .builder-container,
+            .ats-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .nav-buttons {
+                gap: 0.3rem;
+            }
+
+            .nav-buttons button {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.8rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .alert {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: linear-gradient(135deg, #00ff88, #00d4ff);
+            color: #0a0e27;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            z-index: 300;
+            animation: slideIn 0.3s;
+            font-weight: 600;
+            box-shadow: 0 8px 20px rgba(0,255,136,0.3);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #00ff88, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .button-group button {
+            flex: 1;
+        }
+
+        .improvement-suggestion {
+            background: rgba(0,255,136,0.1);
+            border: 2px solid #00ff88;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            color: #e0e0e0;
+        }
+
+        .improvement-suggestion h4 {
+            color: #00ff88;
+            margin-bottom: 0.5rem;
+        }
+
+        .original-text {
+            background: #0a0e27;
+            padding: 0.75rem;
+            border-radius: 5px;
+            margin: 0.5rem 0;
+            color: #b0b0b0;
+            font-style: italic;
+        }
+
+        .improved-text {
+            background: #0a0e27;
+            padding: 0.75rem;
+            border-radius: 5px;
+            margin: 0.5rem 0;
+            color: #00ff88;
+            font-weight: 600;
+        }
+
+        .loader {
+            border: 3px solid #00d4ff;
+            border-top: 3px solid #00ff88;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 1rem auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .copy-btn {
+            background: #00d4ff;
+            color: #0a0e27;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.8rem;
+            transition: all 0.3s;
+        }
+
+        .copy-btn:hover {
+            background: #00ff88;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">
+            <span class="logo-icon">🚀</span>
+            <span>CareerForge Pro AI</span>
+        </div>
+        <div class="nav-buttons">
+            <button class="btn-nav-login" onclick="openLoginModal()" id="navLogin">Login</button>
+            <button class="btn-nav-signup" onclick="openSignupModal()" id="navSignup">Sign Up</button>
+            <div class="user-badge hidden" id="userBadge">Welcome <span id="userNameBadge">User</span></div>
+            <button class="btn-logout hidden" onclick="logout()" id="navLogout">Logout</button>
+        </div>
+    </nav>
+
+    <!-- Home Page -->
+    <div id="home" class="page active">
+        <div class="container">
+            <section class="hero">
+                <div class="ai-badge">🤖 AI-Powered Resume Builder</div>
+                <h1>Land Your <span class="hero-gradient">Dream Job</span></h1>
+                <p>AI-Powered Resume Builder with Advanced ATS Optimization & Smart Features</p>
+                <div class="hero-buttons">
+                    <button class="btn-primary" onclick="openSignupModal()">Get Started Free</button>
+                    <button class="btn-secondary" onclick="openLoginModal()">Log In</button>
+                </div>
+            </section>
+
+            <section class="features-grid">
+                <div class="feature-card">
+                    <div class="ai-label">AI Feature</div>
+                    <div class="feature-icon">🤖</div>
+                    <h3>AI Resume Rewriter</h3>
+                    <p>Let AI improve your resume bullet points with powerful action verbs and impact statements</p>
+                </div>
+                <div class="feature-card">
+                    <div class="ai-label">AI Feature</div>
+                    <div class="feature-icon">📊</div>
+                    <h3>Smart ATS Analyzer</h3>
+                    <p>Advanced ATS optimization with real-time keyword matching and scoring</p>
+                </div>
+                <div class="feature-card">
+                    <div class="ai-label">AI Feature</div>
+                    <div class="feature-icon">💡</div>
+                    <h3>Skill Suggestions</h3>
+                    <p>AI extracts key skills from job descriptions and suggests additions</p>
+                </div>
+                <div class="feature-card">
+                    <div class="ai-label">AI Feature</div>
+                    <div class="feature-icon">📝</div>
+                    <h3>Cover Letter AI</h3>
+                    <p>Generate compelling, personalized cover letters in seconds</p>
+                </div>
+                <div class="feature-card">
+                    <div class="ai-label">AI Feature</div>
+                    <div class="feature-icon">⚡</div>
+                    <h3>Content Enhancement</h3>
+                    <p>AI transforms boring descriptions into powerful achievement statements</p>
+                </div>
+                <div class="feature-card">
+                    <div class="ai-label">AI Feature</div>
+                    <div class="feature-icon">📄</div>
+                    <h3>Smart PDF Export</h3>
+                    <p>Download professionally formatted, ATS-friendly PDF resumes</p>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Dashboard Page -->
+    <div id="dashboard" class="page">
+        <div class="container">
+            <div class="welcome-section">
+                <h2>Welcome Back, <span id="userNameDisplay">User</span>! 👋</h2>
+                <p>Your AI Resume Assistant is ready to help you succeed</p>
+                <button class="btn-primary" onclick="showPage('builder')" style="margin-top: 1rem;">+ Create New Resume</button>
+            </div>
+
+            <h3 class="section-title">Your Resumes</h3>
+            <div id="resumesContainer" class="resumes-grid">
+                <p style="text-align: center; grid-column: 1/-1;">No resumes yet. Create your first one with AI assistance!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Resume Builder Page -->
+    <div id="builder" class="page">
+        <div class="container">
+            <h2 class="section-title">AI Resume Builder</h2>
+
+            <!-- AI Features Panel -->
+            <div class="ai-panel">
+                <h3>🤖 AI Assistant Features</h3>
+                <div class="ai-features">
+                    <button class="ai-feature-btn" onclick="openAIRewriter()">
+                        <span class="ai-feature-icon">✨</span>
+                        Improve Content
+                    </button>
+                    <button class="ai-feature-btn" onclick="openSkillSuggestions()">
+                        <span class="ai-feature-icon">🎯</span>
+                        Skill Suggestions
+                    </button>
+                    <button class="ai-feature-btn" onclick="openCoverLetterAI()">
+                        <span class="ai-feature-icon">📄</span>
+                        Cover Letter
+                    </button>
+                    <button class="ai-feature-btn" onclick="openAITips()">
+                        <span class="ai-feature-icon">💡</span>
+                        AI Tips
+                    </button>
+                </div>
+            </div>
+
+            <div class="builder-container">
+                <!-- Editor -->
+                <div class="builder-section">
+                    <h3>✏️ Edit Resume</h3>
+
+                    <div class="form-group">
+                        <label>Resume Title</label>
+                        <input type="text" id="resumeTitle" placeholder="My Resume" value="My Resume">
+                    </div>
+
+                    <div class="tabs">
+                        <button class="tab-btn active" onclick="switchTab('personal')">Personal</button>
+                        <button class="tab-btn" onclick="switchTab('experience')">Experience</button>
+                        <button class="tab-btn" onclick="switchTab('education')">Education</button>
+                        <button class="tab-btn" onclick="switchTab('skills')">Skills</button>
+                    </div>
+
+                    <!-- Personal Tab -->
+                    <div id="personal" class="tab-content active">
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" id="fullName" placeholder="John Doe">
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" id="email" placeholder="john@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label>Phone</label>
+                            <input type="text" id="phone" placeholder="+1-555-0000">
+                        </div>
+                        <div class="form-group">
+                            <label>Location</label>
+                            <input type="text" id="location" placeholder="City, Country">
+                        </div>
+                        <div class="form-group">
+                            <label>Professional Summary</label>
+                            <textarea id="summary" placeholder="Brief overview of your career..." oninput="updatePreview()"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Experience Tab -->
+                    <div id="experience" class="tab-content">
+                        <div class="form-group">
+                            <label>Company</label>
+                            <input type="text" id="expCompany" placeholder="Company Name">
+                        </div>
+                        <div class="form-group">
+                            <label>Position</label>
+                            <input type="text" id="expPosition" placeholder="Job Title">
+                        </div>
+                        <div class="form-group">
+                            <label>Start Date</label>
+                            <input type="text" id="expStart" placeholder="Jan 2020">
+                        </div>
+                        <div class="form-group">
+                            <label>End Date</label>
+                            <input type="text" id="expEnd" placeholder="Dec 2021 or Present">
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea id="expDescription" placeholder="What did you accomplish?"></textarea>
+                        </div>
+                        <button class="btn-add" onclick="addExperience()">+ Add Experience</button>
+                        <div id="experienceList" class="item-list"></div>
+                    </div>
+
+                    <!-- Education Tab -->
+                    <div id="education" class="tab-content">
+                        <div class="form-group">
+                            <label>Institution</label>
+                            <input type="text" id="eduSchool" placeholder="University Name">
+                        </div>
+                        <div class="form-group">
+                            <label>Degree</label>
+                            <input type="text" id="eduDegree" placeholder="Bachelor's/Master's">
+                        </div>
+                        <div class="form-group">
+                            <label>Field</label>
+                            <input type="text" id="eduField" placeholder="Computer Science">
+                        </div>
+                        <div class="form-group">
+                            <label>Graduation</label>
+                            <input type="text" id="eduGrad" placeholder="May 2022">
+                        </div>
+                        <button class="btn-add" onclick="addEducation()">+ Add Education</button>
+                        <div id="educationList" class="item-list"></div>
+                    </div>
+
+                    <!-- Skills Tab -->
+                    <div id="skills" class="tab-content">
+                        <div class="form-group">
+                            <label>Add Skill</label>
+                            <input type="text" id="skillInput" placeholder="e.g., JavaScript, Leadership">
+                        </div>
+                        <button class="btn-add" onclick="addSkill()">+ Add Skill</button>
+                        <div id="skillsList" class="item-list"></div>
+                    </div>
+
+                    <div class="button-group">
+                        <button class="btn-primary" onclick="saveResume()">💾 Save Resume</button>
+                        <button class="btn-secondary" onclick="showPage('dashboard')">Back</button>
+                    </div>
+                </div>
+
+                <!-- Preview -->
+                <div class="builder-section">
+                    <h3>👁️ Live Preview</h3>
+                    <div id="preview" class="preview">
+                        <div class="preview-header">
+                            <div class="preview-name" id="previewName">Your Name</div>
+                            <div class="preview-contact" id="previewContact"></div>
+                        </div>
+                        <div id="previewContent"></div>
+                    </div>
+                    <button class="btn-primary" onclick="downloadPDF()" style="margin-top: 1rem; width: 100%;">📥 Download AI-Optimized PDF</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ATS Analyzer Page -->
+    <div id="ats" class="page">
+        <div class="container">
+            <h2 class="section-title">🤖 AI ATS Analyzer</h2>
+
+            <div class="ats-container">
+                <div class="ats-section">
+                    <h3>📋 Paste Job Description</h3>
+                    <div class="form-group">
+                        <label>Job Description</label>
+                        <textarea id="jobDescription" placeholder="Paste the job description here..." style="height: 300px;"></textarea>
+                    </div>
+                    <button class="btn-primary" onclick="analyzeATS()" style="width: 100%; margin-bottom: 1rem;">📊 Analyze with AI</button>
+                    <button class="btn-ai" onclick="extractSkillsAI()" style="width: 100%;">🎯 Extract Skills</button>
+                </div>
+
+                <div class="ats-section">
+                    <h3>📈 ATS Results</h3>
+                    <div id="atsResults" class="hidden">
+                        <div class="score-display">
+                            <div class="score-number" id="atsScore">0</div>
+                            <div class="score-text" id="scoreText">Analyzing...</div>
+                        </div>
+
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
+                        </div>
+
+                        <div class="keywords-section">
+                            <h4>✅ Matched Keywords</h4>
+                            <div class="keyword-tags" id="matchedKeywords"></div>
+                        </div>
+
+                        <div class="keywords-section">
+                            <h4>❌ Missing Keywords</h4>
+                            <div class="keyword-tags" id="missingKeywords"></div>
+                        </div>
+
+                        <div class="suggestions" id="suggestions"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Login to CareerForge Pro AI</h2>
+                <button class="close-btn" onclick="closeLoginModal()">×</button>
+            </div>
+            <form onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <button type="submit" class="form-submit">Login</button>
+            </form>
+            <p style="text-align: center; margin-top: 1rem; color: #b0b0b0;">
+                Don't have an account? <button style="background: none; border: none; color: #00d4ff; cursor: pointer; font-weight: 600;" onclick="switchToSignup()">Sign Up</button>
+            </p>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div id="signupModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Join CareerForge Pro AI</h2>
+                <button class="close-btn" onclick="closeSignupModal()">×</button>
+            </div>
+            <form onsubmit="handleSignup(event)">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="signupName" required>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="signupEmail" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="signupPassword" required>
+                </div>
+                <button type="submit" class="form-submit">Create Account</button>
+            </form>
+            <p style="text-align: center; margin-top: 1rem; color: #b0b0b0;">
+                Already have an account? <button style="background: none; border: none; color: #00d4ff; cursor: pointer; font-weight: 600;" onclick="switchToLogin()">Login</button>
+            </p>
+        </div>
+    </div>
+
+    <!-- AI Rewriter Modal -->
+    <div id="aiRewriterModal" class="modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <div class="modal-header">
+                <h2>✨ AI Content Improver</h2>
+                <button class="close-btn" onclick="closeAIRewriter()">×</button>
+            </div>
+            <div id="rewriterContent"></div>
+        </div>
+    </div>
+
+    <!-- Skill Suggestions Modal -->
+    <div id="skillModal" class="modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <div class="modal-header">
+                <h2>🎯 AI Skill Suggestions</h2>
+                <button class="close-btn" onclick="closeSkillSuggestions()">×</button>
+            </div>
+            <div id="skillContent"></div>
+        </div>
+    </div>
+
+    <!-- Cover Letter Modal -->
+    <div id="coverLetterModal" class="modal">
+        <div class="modal-content" style="max-width: 700px;">
+            <div class="modal-header">
+                <h2>📝 AI Cover Letter Generator</h2>
+                <button class="close-btn" onclick="closeCoverLetterAI()">×</button>
+            </div>
+            <div id="coverLetterContent"></div>
+        </div>
+    </div>
+
+    <!-- AI Tips Modal -->
+    <div id="tipsModal" class="modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <div class="modal-header">
+                <h2>💡 AI Career Tips</h2>
+                <button class="close-btn" onclick="closeAITips()">×</button>
+            </div>
+            <div id="tipsContent"></div>
+        </div>
+    </div>
+
+    <script>
+        // ===== AI ENGINE =====
+        const aiEngine = {
+            actionVerbs: ['Achieved', 'Accelerated', 'Accomplished', 'Built', 'Championed', 'Crafted', 'Created', 'Delivered', 'Designed', 'Developed', 'Devised', 'Directed', 'Drove', 'Engineered', 'Enhanced', 'Established', 'Executed', 'Expanded', 'Facilitated', 'Formulated', 'Founded', 'Garnered', 'Generated', 'Guided', 'Implemented', 'Improved', 'Increased', 'Influenced', 'Initiated', 'Instituted', 'Introduced', 'Launched', 'Led', 'Leveraged', 'Magnified', 'Managed', 'Maximized', 'Mentored', 'Negotiated', 'Optimized', 'Orchestrated', 'Originated', 'Overcame', 'Pioneered', 'Planned', 'Produced', 'Promoted', 'Proposed', 'Revamped', 'Revealed', 'Revolutionized', 'Scaled', 'Secured', 'Shaped', 'Shifted', 'Skyrocketed', 'Solved', 'Spearheaded', 'Streamlined', 'Strengthened', 'Structured', 'Succeeded', 'Supervised', 'Transformed', 'Tripled', 'Uncovered', 'Unified', 'Unleashed', 'Upgraded', 'Utilized', 'Validated', 'Visualized', 'Widened', 'Yielded'],
+            
+            metrics: ['increased by', 'achieved', 'reduced by', 'improved by', 'grew by', 'generated', 'saved', 'delivered', 'boosted', 'maximized'],
+            
+            skills: {
+                technical: ['Python', 'JavaScript', 'React', 'Node.js', 'MongoDB', 'SQL', 'AWS', 'Docker', 'Kubernetes', 'Git', 'REST API', 'GraphQL', 'TypeScript', 'Angular', 'Vue.js', 'Express', 'Django', 'Java', 'C++', 'Cloud Computing'],
+                soft: ['Leadership', 'Communication', 'Problem-solving', 'Team Collaboration', 'Project Management', 'Agile', 'Scrum', 'Strategic Thinking', 'Critical Thinking', 'Time Management', 'Adaptability', 'Creativity', 'Public Speaking', 'Negotiation', 'Conflict Resolution']
+            },
+
+            improveContent: function(text) {
+                let improved = text;
+                const verb = this.actionVerbs[Math.floor(Math.random() * this.actionVerbs.length)];
+                
+                if (!improved.toLowerCase().startsWith('was') && !improved.toLowerCase().startsWith('were')) {
+                    improved = verb + ' ' + improved.toLowerCase();
+                }
+                
+                if (!improved.includes('%') && !improved.includes('$')) {
+                    improved += ' - demonstrated quantifiable impact on team performance';
+                }
+                
+                return improved.charAt(0).toUpperCase() + improved.slice(1);
+            },
+
+            extractSkills: function(jobDesc) {
+                const allSkills = [...this.skills.technical, ...this.skills.soft];
+                const foundSkills = [];
+                const lowerDesc = jobDesc.toLowerCase();
+                
+                allSkills.forEach(skill => {
+                    if (lowerDesc.includes(skill.toLowerCase())) {
+                        foundSkills.push(skill);
+                    }
+                });
+                
+                return foundSkills;
+            },
+
+            generateCoverLetter: function(name, position, company) {
+                return `Dear Hiring Manager,
+
+I am excited to apply for the ${position} position at ${company}. With my proven track record of delivering impactful results and driving innovation, I am confident in my ability to contribute significantly to your team.
+
+Throughout my career, I have demonstrated expertise in [key skills from your resume], consistently delivering measurable results. My approach combines technical excellence with strategic thinking, enabling me to solve complex problems and drive business growth.
+
+At my current/previous role, I have spearheaded initiatives that resulted in improved efficiency and team performance. I am particularly drawn to ${company}'s commitment to innovation and excellence, and I am eager to bring my skills and experience to contribute to your mission.
+
+I would welcome the opportunity to discuss how my background, skills, and enthusiasm can add value to your organization. Thank you for considering my application.
+
+Sincerely,
+${name}`;
+            },
+
+            getCareerTips: function() {
+                return [
+                    '✨ Use strong action verbs to start each bullet point',
+                    '📊 Quantify your achievements with numbers and percentages',
+                    '🎯 Customize your resume for each job application',
+                    '📝 Keep bullet points concise (1-2 lines)',
+                    '💼 Highlight measurable results and impact',
+                    '🔑 Include relevant keywords from the job description',
+                    '⭐ Place most important info at the top',
+                    '📱 Ensure ATS compatibility - use simple formatting',
+                    '🎓 Highlight relevant certifications and achievements',
+                    '🚀 Show progression and growth in your career'
+                ];
+            }
+        };
+
+        // ===== DATA MANAGEMENT =====
+        let currentUser = null;
+        let resumes = [];
+        let currentResume = null;
+
+        function loadData() {
+            const user = localStorage.getItem('cfUser');
+            const saveResumes = localStorage.getItem('cfResumes');
+            if (user) currentUser = JSON.parse(user);
+            if (saveResumes) resumes = JSON.parse(saveResumes);
+            updateUI();
+        }
+
+        function saveData() {
+            if (currentUser) localStorage.setItem('cfUser', JSON.stringify(currentUser));
+            localStorage.setItem('cfResumes', JSON.stringify(resumes));
+        }
+
+        // ===== AUTHENTICATION =====
+        function openLoginModal() { document.getElementById('loginModal').classList.add('active'); }
+        function closeLoginModal() { document.getElementById('loginModal').classList.remove('active'); }
+        function openSignupModal() { document.getElementById('signupModal').classList.add('active'); }
+        function closeSignupModal() { document.getElementById('signupModal').classList.remove('active'); }
+        function switchToSignup() { closeLoginModal(); openSignupModal(); }
+        function switchToLogin() { closeSignupModal(); openLoginModal(); }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            if (!email || !password) {
+                showAlert('Please fill all fields', 'error');
+                return;
+            }
+
+            currentUser = {
+                id: 'user_' + Date.now(),
+                name: email.split('@')[0],
+                email: email,
+                password: password
+            };
+
+            saveData();
+            updateUI();
+            closeLoginModal();
+            showAlert('Welcome to CareerForge Pro AI! 🚀', 'success');
+            showPage('dashboard');
+        }
+
+        function handleSignup(e) {
+            e.preventDefault();
+            const name = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+
+            if (!name || !email || !password) {
+                showAlert('Please fill all fields', 'error');
+                return;
+            }
+
+            currentUser = {
+                id: 'user_' + Date.now(),
+                name: name,
+                email: email,
+                password: password
+            };
+
+            saveData();
+            updateUI();
+            closeSignupModal();
+            showAlert('Account created! Your AI Resume Assistant is ready! 🤖', 'success');
+            showPage('dashboard');
+        }
+
+        function logout() {
+            currentUser = null;
+            resumes = [];
+            currentResume = null;
+            localStorage.clear();
+            saveData();
+            updateUI();
+            showPage('home');
+            showAlert('Logged out!', 'success');
+        }
+
+        // ===== UI MANAGEMENT =====
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+
+            if (pageId === 'dashboard' && !currentUser) {
+                openLoginModal();
+                showPage('home');
+                return;
+            }
+
+            if (pageId === 'dashboard') updateDashboard();
+            if (pageId === 'ats') updateAtsPage();
+        }
+
+        function updateUI() {
+            const navLogin = document.getElementById('navLogin');
+            const navSignup = document.getElementById('navSignup');
+            const navLogout = document.getElementById('navLogout');
+            const userBadge = document.getElementById('userBadge');
+
+            if (currentUser) {
+                navLogin.classList.add('hidden');
+                navSignup.classList.add('hidden');
+                navLogout.classList.remove('hidden');
+                userBadge.classList.remove('hidden');
+                document.getElementById('userNameDisplay').textContent = currentUser.name;
+                document.getElementById('userNameBadge').textContent = currentUser.name;
+            } else {
+                navLogin.classList.remove('hidden');
+                navSignup.classList.remove('hidden');
+                navLogout.classList.add('hidden');
+                userBadge.classList.add('hidden');
+            }
+        }
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function showAlert(message, type) {
+            const alert = document.createElement('div');
+            alert.className = 'alert';
+            alert.textContent = message;
+            document.body.appendChild(alert);
+            setTimeout(() => alert.remove(), 3000);
+        }
+
+        // ===== RESUME MANAGEMENT =====
+        function updatePreview() {
+            if (!currentResume) {
+                currentResume = {
+                    id: 'res_' + Date.now(),
+                    title: 'My Resume',
+                    personalInfo: {},
+                    experience: [],
+                    education: [],
+                    skills: []
+                };
+            }
+
+            currentResume.title = document.getElementById('resumeTitle').value;
+            currentResume.personalInfo = {
+                name: document.getElementById('fullName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                location: document.getElementById('location').value,
+                summary: document.getElementById('summary').value
+            };
+
+            const name = currentResume.personalInfo.name || 'Your Name';
+            const contact = [
+                currentResume.personalInfo.email,
+                currentResume.personalInfo.phone,
+                currentResume.personalInfo.location
+            ].filter(Boolean).join(' | ');
+
+            document.getElementById('previewName').textContent = name;
+            document.getElementById('previewContact').textContent = contact;
+
+            let html = '';
+
+            if (currentResume.personalInfo.summary) {
+                html += `<div class="preview-section">
+                    <div class="preview-section-title">Professional Summary</div>
+                    <div class="preview-item-content">${currentResume.personalInfo.summary}</div>
+                </div>`;
+            }
+
+            if (currentResume.experience.length > 0) {
+                html += '<div class="preview-section"><div class="preview-section-title">Experience</div>';
+                currentResume.experience.forEach(exp => {
+                    html += `<div class="preview-item">
+                        <div class="preview-item-title">${exp.position} at ${exp.company}</div>
+                        <div class="preview-item-subtitle">${exp.start} - ${exp.end}</div>
+                        <div class="preview-item-content">${exp.description}</div>
+                    </div>`;
+                });
+                html += '</div>';
+            }
+
+            if (currentResume.education.length > 0) {
+                html += '<div class="preview-section"><div class="preview-section-title">Education</div>';
+                currentResume.education.forEach(edu => {
+                    html += `<div class="preview-item">
+                        <div class="preview-item-title">${edu.degree} in ${edu.field}</div>
+                        <div class="preview-item-subtitle">${edu.school}</div>
+                        <div class="preview-item-content">Graduated: ${edu.graduation}</div>
+                    </div>`;
+                });
+                html += '</div>';
+            }
+
+            if (currentResume.skills.length > 0) {
+                html += '<div class="preview-section"><div class="preview-section-title">Skills</div><div>';
+                currentResume.skills.forEach(skill => {
+                    html += `<span class="skill-tag">${skill.name}</span>`;
+                });
+                html += '</div></div>';
+            }
+
+            document.getElementById('previewContent').innerHTML = html;
+        }
+
+        function addExperience() {
+            const company = document.getElementById('expCompany').value;
+            const position = document.getElementById('expPosition').value;
+            const start = document.getElementById('expStart').value;
+            const end = document.getElementById('expEnd').value;
+            const description = document.getElementById('expDescription').value;
+
+            if (!company || !position) {
+                showAlert('Please fill company and position', 'error');
+                return;
+            }
+
+            if (!currentResume) currentResume = { experience: [], education: [], skills: [] };
+
+            currentResume.experience.push({
+                id: 'exp_' + Date.now(),
+                company,
+                position,
+                start,
+                end,
+                description
+            });
+
+            document.getElementById('expCompany').value = '';
+            document.getElementById('expPosition').value = '';
+            document.getElementById('expStart').value = '';
+            document.getElementById('expEnd').value = '';
+            document.getElementById('expDescription').value = '';
+
+            renderExperienceList();
+            updatePreview();
+        }
+
+        function renderExperienceList() {
+            const list = document.getElementById('experienceList');
+            list.innerHTML = '';
+
+            if (!currentResume.experience) return;
+
+            currentResume.experience.forEach(exp => {
+                const item = document.createElement('div');
+                item.className = 'item';
+                item.innerHTML = `
+                    <div class="item-content">
+                        <h4>${exp.position} at ${exp.company}</h4>
+                        <p>${exp.start} - ${exp.end}</p>
+                    </div>
+                    <div class="item-actions">
+                        <button class="btn-improve" onclick="improveExperience('${exp.id}')">Improve</button>
+                        <button class="btn-remove" onclick="deleteExperience('${exp.id}')">Remove</button>
+                    </div>
+                `;
+                list.appendChild(item);
+            });
+        }
+
+        function improveExperience(id) {
+            const exp = currentResume.experience.find(e => e.id === id);
+            if (exp) {
+                const improved = aiEngine.improveContent(exp.description);
+                const choice = confirm(`Original:\n${exp.description}\n\nImproved:\n${improved}\n\nUse this improvement?`);
+                if (choice) {
+                    exp.description = improved;
+                    renderExperienceList();
+                    updatePreview();
+                    showAlert('Content improved with AI! ✨', 'success');
+                }
+            }
+        }
+
+        function deleteExperience(id) {
+            currentResume.experience = currentResume.experience.filter(e => e.id !== id);
+            renderExperienceList();
+            updatePreview();
+        }
+
+        function addEducation() {
+            const school = document.getElementById('eduSchool').value;
+            const degree = document.getElementById('eduDegree').value;
+            const field = document.getElementById('eduField').value;
+            const graduation = document.getElementById('eduGrad').value;
+
+            if (!school || !degree) {
+                showAlert('Please fill school and degree', 'error');
+                return;
+            }
+
+            if (!currentResume) currentResume = { experience: [], education: [], skills: [] };
+
+            currentResume.education.push({
+                id: 'edu_' + Date.now(),
+                school,
+                degree,
+                field,
+                graduation
+            });
+
+            document.getElementById('eduSchool').value = '';
+            document.getElementById('eduDegree').value = '';
+            document.getElementById('eduField').value = '';
+            document.getElementById('eduGrad').value = '';
+
+            renderEducationList();
+            updatePreview();
+        }
+
+        function renderEducationList() {
+            const list = document.getElementById('educationList');
+            list.innerHTML = '';
+
+            if (!currentResume.education) return;
+
+            currentResume.education.forEach(edu => {
+                const item = document.createElement('div');
+                item.className = 'item';
+                item.innerHTML = `
+                    <div class="item-content">
+                        <h4>${edu.degree} in ${edu.field}</h4>
+                        <p>${edu.school}</p>
+                    </div>
+                    <button class="btn-remove" onclick="deleteEducation('${edu.id}')">Remove</button>
+                `;
+                list.appendChild(item);
+            });
+        }
+
+        function deleteEducation(id) {
+            currentResume.education = currentResume.education.filter(e => e.id !== id);
+            renderEducationList();
+            updatePreview();
+        }
+
+        function addSkill() {
+            const skill = document.getElementById('skillInput').value;
+
+            if (!skill) {
+                showAlert('Please enter a skill', 'error');
+                return;
+            }
+
+            if (!currentResume) currentResume = { experience: [], education: [], skills: [] };
+
+            currentResume.skills.push({
+                id: 'skill_' + Date.now(),
+                name: skill
+            });
+
+            document.getElementById('skillInput').value = '';
+            renderSkillsList();
+            updatePreview();
+        }
+
+        function renderSkillsList() {
+            const list = document.getElementById('skillsList');
+            list.innerHTML = '';
+
+            if (!currentResume.skills) return;
+
+            currentResume.skills.forEach(skill => {
+                const item = document.createElement('div');
+                item.className = 'item';
+                item.innerHTML = `
+                    <div class="item-content">
+                        <h4>${skill.name}</h4>
+                    </div>
+                    <button class="btn-remove" onclick="deleteSkill('${skill.id}')">Remove</button>
+                `;
+                list.appendChild(item);
+            });
+        }
+
+        function deleteSkill(id) {
+            currentResume.skills = currentResume.skills.filter(s => s.id !== id);
+            renderSkillsList();
+            updatePreview();
+        }
+
+        function saveResume() {
+            if (!currentUser) {
+                showAlert('Please login first', 'error');
+                return;
+            }
+
+            updatePreview();
+
+            if (!currentResume.id) {
+                currentResume.id = 'res_' + Date.now();
+                resumes.push(currentResume);
+            }
+
+            saveData();
+            showAlert('Resume saved with AI optimization! 🎉', 'success');
+        }
+
+        function updateDashboard() {
+            const container = document.getElementById('resumesContainer');
+            container.innerHTML = '';
+
+            if (resumes.length === 0) {
+                container.innerHTML = '<p style="text-align: center; grid-column: 1/-1;">No resumes yet. Create your first one with AI assistance!</p>';
+                return;
+            }
+
+            resumes.forEach(resume => {
+                const card = document.createElement('div');
+                card.className = 'resume-card';
+                card.innerHTML = `
+                    <h3>${resume.title}</h3>
+                    <p>${resume.personalInfo.name || 'Untitled'}</p>
+                    <div class="card-buttons">
+                        <button class="btn-edit" onclick="editResume('${resume.id}')">Edit</button>
+                        <button class="btn-pdf" onclick="downloadResumePDF('${resume.id}')">PDF</button>
+                        <button class="btn-ai" onclick="analyzeResumeAI('${resume.id}')">AI Analysis</button>
+                        <button class="btn-delete" onclick="deleteResume('${resume.id}')">Delete</button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function editResume(id) {
+            currentResume = resumes.find(r => r.id === id);
+            if (currentResume) {
+                document.getElementById('resumeTitle').value = currentResume.title || '';
+                document.getElementById('fullName').value = currentResume.personalInfo.name || '';
+                document.getElementById('email').value = currentResume.personalInfo.email || '';
+                document.getElementById('phone').value = currentResume.personalInfo.phone || '';
+                document.getElementById('location').value = currentResume.personalInfo.location || '';
+                document.getElementById('summary').value = currentResume.personalInfo.summary || '';
+
+                renderExperienceList();
+                renderEducationList();
+                renderSkillsList();
+                updatePreview();
+                showPage('builder');
+            }
+        }
+
+        function deleteResume(id) {
+            if (confirm('Are you sure you want to delete this resume?')) {
+                resumes = resumes.filter(r => r.id !== id);
+                saveData();
+                updateDashboard();
+                showAlert('Resume deleted!', 'success');
+            }
+        }
+
+        function downloadPDF() {
+            if (!currentResume.personalInfo.name) {
+                showAlert('Please enter your name first', 'error');
+                return;
+            }
+
+            const element = document.getElementById('preview');
+            const opt = {
+                margin: 10,
+                filename: (currentResume.title || 'Resume') + '_AIOPtimized.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4' }
+            };
+
+            html2pdf().set(opt).from(element).save();
+            showAlert('AI-Optimized PDF Downloaded! 📥', 'success');
+        }
+
+        function downloadResumePDF(id) {
+            const resume = resumes.find(r => r.id === id);
+            if (resume) {
+                currentResume = resume;
+                updatePreview();
+                setTimeout(() => downloadPDF(), 100);
+            }
+        }
+
+        // ===== AI FEATURES =====
+        function openAIRewriter() {
+            if (!currentResume || !currentResume.experience.length) {
+                showAlert('Please add experience first', 'error');
+                return;
+            }
+
+            let content = '<div style="margin: 1rem 0;">';
+            currentResume.experience.forEach(exp => {
+                const improved = aiEngine.improveContent(exp.description);
+                content += `
+                    <div class="improvement-suggestion">
+                        <h4>${exp.position} at ${exp.company}</h4>
+                        <p><strong>Original:</strong></p>
+                        <div class="original-text">${exp.description}</div>
+                        <p><strong>AI Improved:</strong></p>
+                        <div class="improved-text">${improved}</div>
+                        <button class="copy-btn" onclick="copyToClipboard('${improved}')">Copy</button>
+                    </div>
+                `;
+            });
+            content += '</div>';
+            content += '<button class="btn-primary" onclick="closeAIRewriter()" style="width: 100%; margin-top: 1rem;">Apply & Close</button>';
+
+            document.getElementById('rewriterContent').innerHTML = content;
+            document.getElementById('aiRewriterModal').classList.add('active');
+        }
+
+        function closeAIRewriter() {
+            document.getElementById('aiRewriterModal').classList.remove('active');
+        }
+
+        function openSkillSuggestions() {
+            const jobDesc = document.getElementById('jobDescription').value;
+            if (!jobDesc) {
+                showAlert('Please paste a job description first', 'error');
+                return;
+            }
+
+            const suggestedSkills = aiEngine.extractSkills(jobDesc);
+            const currentSkills = currentResume.skills.map(s => s.name);
+            const missingSkills = suggestedSkills.filter(s => !currentSkills.includes(s));
+
+            let content = '<div style="margin: 1rem 0;">';
+            content += '<h4 style="color: #00ff88; margin-bottom: 1rem;">🎯 Suggested Skills to Add:</h4>';
+            
+            if (missingSkills.length > 0) {
+                missingSkills.forEach(skill => {
+                    content += `
+                        <div style="background: #0a0e27; padding: 0.75rem; border-radius: 5px; margin-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center; border: 2px solid #00d4ff;">
+                            <span>${skill}</span>
+                            <button class="copy-btn" onclick="addSkillToResume('${skill}')">Add</button>
+                        </div>
+                    `;
+                });
+            } else {
+                content += '<p style="color: #b0b0b0;">Great! You already have all the key skills from this job description.</p>';
+            }
+
+            content += '</div>';
+            content += '<button class="btn-primary" onclick="closeSkillSuggestions()" style="width: 100%; margin-top: 1rem;">Close</button>';
+
+            document.getElementById('skillContent').innerHTML = content;
+            document.getElementById('skillModal').classList.add('active');
+        }
+
+        function closeSkillSuggestions() {
+            document.getElementById('skillModal').classList.remove('active');
+        }
+
+        function addSkillToResume(skill) {
+            if (!currentResume.skills.find(s => s.name === skill)) {
+                currentResume.skills.push({ id: 'skill_' + Date.now(), name: skill });
+                renderSkillsList();
+                updatePreview();
+                showAlert(`Added: ${skill} ✅`, 'success');
+            }
+        }
+
+        function openCoverLetterAI() {
+            if (!currentResume.personalInfo.name) {
+                showAlert('Please enter your name in Personal Info', 'error');
+                return;
+            }
+
+            const position = prompt('Job Position:');
+            const company = prompt('Company Name:');
+
+            if (!position || !company) return;
+
+            const coverLetter = aiEngine.generateCoverLetter(
+                currentResume.personalInfo.name,
+                position,
+                company
+            );
+
+            let content = `
+                <textarea style="width: 100%; height: 400px; padding: 1rem; border: 2px solid #00d4ff; background: #0a0e27; color: #e0e0e0; border-radius: 5px; font-family: monospace;">${coverLetter}</textarea>
+                <div style="margin-top: 1rem; display: flex; gap: 1rem;">
+                    <button class="copy-btn" onclick="copyToClipboard(\`${coverLetter.replace(/`/g, '\\`')}\`)" style="flex: 1;">Copy to Clipboard</button>
+                    <button class="btn-primary" onclick="closeCoverLetterAI()" style="flex: 1;">Close</button>
+                </div>
+            `;
+
+            document.getElementById('coverLetterContent').innerHTML = content;
+            document.getElementById('coverLetterModal').classList.add('active');
+        }
+
+        function closeCoverLetterAI() {
+            document.getElementById('coverLetterModal').classList.remove('active');
+        }
+
+        function openAITips() {
+            const tips = aiEngine.getCareerTips();
+            let content = '<div style="margin: 1rem 0;">';
+
+            tips.forEach(tip => {
+                content += `
+                    <div style="background: #0a0e27; padding: 1rem; border-radius: 5px; margin-bottom: 0.75rem; border-left: 4px solid #00ff88;">
+                        <p style="color: #e0e0e0;">${tip}</p>
+                    </div>
+                `;
+            });
+
+            content += '</div>';
+            content += '<button class="btn-primary" onclick="closeAITips()" style="width: 100%; margin-top: 1rem;">Close</button>';
+
+            document.getElementById('tipsContent').innerHTML = content;
+            document.getElementById('tipsModal').classList.add('active');
+        }
+
+        function closeAITips() {
+            document.getElementById('tipsModal').classList.remove('active');
+        }
+
+        function analyzeResumeAI(id) {
+            const resume = resumes.find(r => r.id === id);
+            if (resume) {
+                const feedback = [
+                    `✅ Your resume has ${resume.experience.length} experience entries`,
+                    `✅ Your resume includes ${resume.education.length} education entries`,
+                    `✅ You have ${resume.skills.length} skills listed`,
+                    resume.personalInfo.summary ? '✅ Professional summary is present' : '⚠️ Consider adding a professional summary',
+                    resume.skills.length < 10 ? '💡 Consider adding more technical skills' : '✅ Strong skill set',
+                    '🎯 AI Tip: Quantify your achievements with numbers and percentages',
+                    '🎯 AI Tip: Use action verbs to start each bullet point',
+                    '🎯 AI Tip: Tailor your resume for each job application'
+                ];
+
+                alert('📊 AI Resume Analysis:\n\n' + feedback.join('\n'));
+            }
+        }
+
+        // ===== ATS ANALYZER =====
+        function analyzeATS() {
+            if (!currentResume || !currentResume.personalInfo.name) {
+                showAlert('Please create or load a resume first', 'error');
+                return;
+            }
+
+            const jobDesc = document.getElementById('jobDescription').value;
+            if (!jobDesc) {
+                showAlert('Please paste a job description', 'error');
+                return;
+            }
+
+            const keywords = [
+                'javascript', 'python', 'java', 'react', 'node.js', 'sql', 'mongodb', 'aws', 'docker', 'kubernetes',
+                'leadership', 'management', 'communication', 'problem-solving', 'html', 'css', 'angular', 'vue',
+                'agile', 'git', 'ci/cd', 'mysql', 'postgresql', 'rest api', 'graphql', 'typescript', 'microservices',
+                'cloud', 'devops', 'jenkins', 'linux', 'windows', 'team', 'project', 'experience'
+            ];
+
+            const resumeText = JSON.stringify(currentResume).toLowerCase();
+            const jobDescLower = jobDesc.toLowerCase();
+
+            const matchedKeywords = [];
+            const missingKeywords = [];
+
+            keywords.forEach(keyword => {
+                if (jobDescLower.includes(keyword)) {
+                    if (resumeText.includes(keyword)) {
+                        matchedKeywords.push(keyword);
+                    } else {
+                        missingKeywords.push(keyword);
+                    }
+                }
+            });
+
+            const score = matchedKeywords.length + missingKeywords.length > 0 
+                ? Math.round((matchedKeywords.length / (matchedKeywords.length + missingKeywords.length)) * 100) 
+                : 0;
+
+            document.getElementById('atsResults').classList.remove('hidden');
+            document.getElementById('atsScore').textContent = score;
+            document.getElementById('progressFill').style.width = score + '%';
+
+            const scoreText = score >= 80 ? '🎉 Excellent Match!' : score >= 60 ? '✅ Good Match' : '⚠️ Needs Improvement';
+            document.getElementById('scoreText').textContent = scoreText;
+
+            const matchedContainer = document.getElementById('matchedKeywords');
+            matchedContainer.innerHTML = '';
+            matchedKeywords.forEach(kw => {
+                const tag = document.createElement('span');
+                tag.className = 'keyword-tag keyword-matched';
+                tag.textContent = kw;
+                matchedContainer.appendChild(tag);
+            });
+
+            const missingContainer = document.getElementById('missingKeywords');
+            missingContainer.innerHTML = '';
+            missingKeywords.slice(0, 10).forEach(kw => {
+                const tag = document.createElement('span');
+                tag.className = 'keyword-tag keyword-missing';
+                tag.textContent = kw;
+                missingContainer.appendChild(tag);
+            });
+
+            const suggestionsContainer = document.getElementById('suggestions');
+            suggestionsContainer.innerHTML = '';
+            if (missingKeywords.length > 0) {
+                const sug = document.createElement('div');
+                sug.className = 'suggestion-item';
+                sug.innerHTML = `💡 <strong>Add these keywords to improve your ATS score:</strong><br>${missingKeywords.slice(0, 8).join(', ')}`;
+                suggestionsContainer.appendChild(sug);
+            }
+
+            const suggestion2 = document.createElement('div');
+            suggestion2.className = 'suggestion-item';
+            suggestion2.innerHTML = `💡 <strong>AI Tip:</strong> Use exact keywords from the job description in your resume`;
+            suggestionsContainer.appendChild(suggestion2);
+
+            showAlert('ATS Analysis Complete! 📊', 'success');
+        }
+
+        function extractSkillsAI() {
+            const jobDesc = document.getElementById('jobDescription').value;
+            if (!jobDesc) {
+                showAlert('Please paste a job description first', 'error');
+                return;
+            }
+
+            openSkillSuggestions();
+        }
+
+        function updateAtsPage() {
+            // Page will update when user analyzes
+        }
+
+        // ===== UTILITIES =====
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showAlert('Copied to clipboard! 📋', 'success');
+            });
+        }
+
+        // ===== INITIALIZATION =====
+        window.addEventListener('load', function() {
+            loadData();
+            currentResume = {
+                id: 'res_new',
+                title: 'My Resume',
+                personalInfo: {},
+                experience: [],
+                education: [],
+                skills: []
+            };
+            updatePreview();
+        });
+
+        window.addEventListener('click', function(event) {
+            const loginModal = document.getElementById('loginModal');
+            const signupModal = document.getElementById('signupModal');
+            const aiRewriterModal = document.getElementById('aiRewriterModal');
+            const skillModal = document.getElementById('skillModal');
+            const coverLetterModal = document.getElementById('coverLetterModal');
+            const tipsModal = document.getElementById('tipsModal');
+
+            if (event.target === loginModal) closeLoginModal();
+            if (event.target === signupModal) closeSignupModal();
+            if (event.target === aiRewriterModal) closeAIRewriter();
+            if (event.target === skillModal) closeSkillSuggestions();
+            if (event.target === coverLetterModal) closeCoverLetterAI();
+            if (event.target === tipsModal) closeAITips();
+        });
+
+        // Add navigation to ATS page
+        function showATSPage() {
+            showPage('ats');
+        }
+    </script>
+</body>
+</html>
